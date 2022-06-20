@@ -32,15 +32,15 @@ public class RegistroController {
 
         return "registroGuitarra.jsp";
     }
-    @RequestMapping("/registro/mostrar")
-    public String mostrarroauto(Model model){
+    @RequestMapping("home/registro/mostrar")
+    public String mostrarroGuitarra(Model model){
 
 
-        //Solo mostrar autos mandandole el listado al .jsp
+        //Solo mostrar guitarras mandandole el listado al .jsp
         List<Guitarra> listaGuitarras = guitarraService.findAll();
         model.addAttribute("ListaGuitarras", listaGuitarras);
 
-        return "mostrarautos.jsp";
+        return "mostrarGuitarras.jsp";
     }
 
 
@@ -53,12 +53,14 @@ public class RegistroController {
         if (resultado.hasErrors()) {//Validar si resultado tiene errores
             model.addAttribute("msgError", "Datos incorrectos. Comprueba la información.");
             return "registroGuitarra.jsp";
-        } else
+        } else {
 
             guitarraService.GuardarGuitarra(guitarra);
-        return "mostrarGuitarras.jsp";//.jsp para mostrar listado de guitarras
+            List<Guitarra> listaGuitarras = guitarraService.findAll();
+            model.addAttribute("ListaGuitarras", listaGuitarras);
+            return "mostrarGuitarras.jsp";//.jsp para mostrar listado de guitarras
 
-
+        }
     }
     @RequestMapping("/registro/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
@@ -69,25 +71,25 @@ public class RegistroController {
     }
 
     //Para actualizar la BBDD
-    @PostMapping("registro/actualizar/{id}")
+    @PostMapping("/registro/actualizar/{id}")
     public String actualizarRegistro(@PathVariable("id") Long id, @Valid @ModelAttribute("guitarra") Guitarra guitarra, //Objeto Usuario esta vacio
                                      BindingResult resultado,
                                      Model model) {
-
 
         if (resultado.hasErrors()) {//Validar si resultado tiene errores
             model.addAttribute("msgError", "Uno de los datos esta erroneo, porfavor arreglar");
 
             return "editarregistroGuitarra.jsp";
 
-        }
+        }else{//NO OLVIDARSE DE PONER ELSE
 
             guitarra.setId(id); //Agregamos id al objeto
             guitarraService.GuardarGuitarra(guitarra);
             List<Guitarra> listaGuitarras = guitarraService.findAll();
-            model.addAttribute("ListaGuitarra", listaGuitarras);
+            model.addAttribute("ListaGuitarras", listaGuitarras);
             return "mostrarGuitarras.jsp";
 
 
+    }
     }
 }
