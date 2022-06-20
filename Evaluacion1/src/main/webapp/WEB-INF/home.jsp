@@ -18,6 +18,10 @@
 <body>
 
 
+<form:form action="/home/registro" method ="post"> <!--El formulario nos lleva a la ruta de registro-->
+    <input type = "submit" value ="Registra tu guitarra">
+</form:form>
+
 
 </body>
 </html>
